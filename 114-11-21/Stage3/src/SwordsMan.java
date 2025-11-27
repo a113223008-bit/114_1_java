@@ -1,61 +1,77 @@
-public class SwordsMan extends MeleeRole{
-    // 建構子：初始化劍士的名稱、生命值和攻擊力
+/**
+ * SwordsMan - 劍士類別
+ * 
+ * 第三階段修改：
+ * - 從繼承 Role 改為繼承 MeleeRole
+ * - 獲得護甲值屬性
+ * - 獲得防禦計算能力
+ * - 需要實作 getWeaponType() 和 onMeleePrepare()
+ */
+public class SwordsMan extends MeleeRole {
+    
+    /**
+     * 建構子：初始化劍士
+     * 注意：現在需要傳入 armor 參數
+     */
     public SwordsMan(String name, int health, int attackPower, int armor) {
         super(name, health, attackPower, armor);
     }
 
-    // 攻擊對手，父類別參考指到子類別物件
+    // 攻擊對手
     @Override
     public void attack(Role opponent) {
+        System.out.println("⚔️  " + this.getName() + " 揮動 " + getWeaponType() + " 攻擊 " + opponent.getName() + "！");
         opponent.takeDamage(this.getAttackPower());
-        System.out.println("⚔"+this.getName()+"揮劍攻擊"+opponent.getName()+"!");
     }
-    /**
-     * 展示角色的特殊技能
-     * 為什麼設計成抽象方法？
-     * 1. 每個角色都有特殊技能（共同規格）
-     * 2. 但每個角色的技能內容都不同（個別實作）
-     * 3. 我們無法在 Role 類別中提供一個「適合所有角色」的預設實作
-     */
+
+    // 展示特殊技能
     @Override
-    public void showSpecialSkill(){
-        System.out.println("╔═════════════════════════════╗");
-        System.out.println("║ " + this.getName() + " 的特殊技能：     ║");
-        System.out.println("╠═════════════════════════════╣");
-        System.out.println("║ 技能名稱：連續斬擊          ║");
-        System.out.println("║ 技能描述：快速揮劍三次      ║");
-        System.out.println("║ 技能效果：造成 150% 傷害    ║");
-        System.out.println("║ 護甲加成：+"+getArmor()+"點傷害    ║");
-        System.out.println("╚═════════════════════════════╝");
+    public void showSpecialSkill() {
+        System.out.println("┌─────────────────────────────┐");
+        System.out.println("│ " + this.getName() + " 的特殊技能        │");
+        System.out.println("├─────────────────────────────┤");
+        System.out.println("│ 技能名稱：連續斬擊          │");
+        System.out.println("│ 技能描述：快速揮劍三次      │");
+        System.out.println("│ 技能效果：造成 150% 傷害    │");
+        System.out.println("│ 護甲加成：+" + getArmor() + " 點防禦         │");
+        System.out.println("└─────────────────────────────┘");
     }
-    /**
-     * 劍士的戰前準備
-     * 擦拭劍刃，做好戰鬥準備
-     */
-    @Override
-    public void prepareBattle() {
-        System.out.println("🗡️  " + this.getName() + " 擦拭劍刃，劍身反射出凜冽的寒光...");
-    }
+
+    // 劍士的死亡效果
     @Override
     public void onDeath() {
         System.out.println("💀 " + this.getName() + " 倒下了...");
-        System.out.println("⚔️  " + this.getName() + " 的劍掉落在地上，發出清脆的聲響。");
+        System.out.println("⚔️  " + getWeaponType() + " 掉落在地上，發出清脆的聲響。");
+        System.out.println("🛡️  護甲碎裂散落一地。");
         System.out.println("---");
     }
+
+    // ========== 第三階段新增：實作 MeleeRole 的抽象方法 ==========
+    
     /**
-     * 劍士的戰後行為
-     * 將劍收入劍鞘
+     * 取得武器類型（抽象方法實作）
+     * 劍士使用雙手劍
      */
-    @Override
-    public void afterBattle() {
-        System.out.println("🗡️  " + this.getName() + " 將劍收入劍鞘。");
-    }
     @Override
     public String getWeaponType() {
         return "雙手劍";
     }
+
+    /**
+     * 近戰特殊準備（抽象方法實作）
+     * 劍士會擦拭劍刃
+     */
     @Override
     protected void onMeleePrepare() {
-        System.out.println("🗡️  " + getName() + " 檢查雙手劍的鋒利度...");
+        System.out.println("✨ 擦拭劍刃，劍身反射出凜冽的寒光...");
+    }
+
+    /**
+     * 戰後行為
+     * 劍士會收劍入鞘
+     */
+    @Override
+    public void afterBattle() {
+        System.out.println("🗡️  " + this.getName() + " 將 " + getWeaponType() + " 收入劍鞘。");
     }
 }
