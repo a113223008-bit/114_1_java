@@ -24,8 +24,6 @@ public class RPG {
         System.out.println();
 
         // ========== 建立角色 ==========
-        // ... (省略建立角色的程式碼)
-
         // 7 個角色（新增 Paladin）
         SwordsMan swordsMan_light = new SwordsMan("光明劍士", 100, 20, 5);
         SwordsMan swordsMan_dark = new SwordsMan("黑暗劍士", 100, 25, 3);
